@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
+const { restore } = require('../../models/Product');
 
 // The `/api/categories` endpoint
 
@@ -12,6 +13,17 @@ router.get('/', (req, res) => {
       attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
     }
   })
+  .then(categoryData => {
+    if(!categoryData) {
+      res.status(404).json({message: 'No categories found!'});
+      return;
+    }
+    res.json(categoryData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err)
+  });
 });
 
 router.get('/:id', (req, res) => {
@@ -26,6 +38,17 @@ router.get('/:id', (req, res) => {
       attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
     }
   })
+  .then(categoryData => {
+    if (!categoryData) {
+      res.status(404).json({message: 'Category not found!'});
+      return;
+    }
+    res.json(categoryData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err)
+  });
 });
 
 router.post('/', (req, res) => {
@@ -33,6 +56,11 @@ router.post('/', (req, res) => {
   Category.create({
     category_name: req.body.category_name
   })
+  .then(categoryData => res.json(categoryData))
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err)
+  });
 });
 
 router.put('/:id', (req, res) => {
@@ -42,6 +70,17 @@ router.put('/:id', (req, res) => {
       id: req.params.id
     }
   })
+  .then(categoryData => {
+    if(!categoryData) {
+      res.status(404).json({message: 'Category not found!'});
+      return;
+    }
+    res.json(categoryData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err)
+  })
 });
 
 router.delete('/:id', (req, res) => {
@@ -50,6 +89,17 @@ router.delete('/:id', (req, res) => {
     where: {
       id: req.params.id
     }
+  })
+  .then(categoryData => {
+    if(!categoryData) {
+      res.status(404).json({message: 'Category not found!'});
+      return;
+    }
+    res.json(categoryData);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(400).json(err)
   })
 });
 
